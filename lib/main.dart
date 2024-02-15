@@ -4,8 +4,6 @@ void main() {
   runApp(const MyApp());
 }
 
-
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -41,7 +39,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-
   final String title;
 
   @override
@@ -49,9 +46,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-
-  Map<String,String> forecast = {
+  Map<String, String> forecast = {
     "name": "today",
     "temperature": "35",
     "shortForecast": "Snowy",
@@ -60,7 +55,6 @@ class _MyHomePageState extends State<MyHomePage> {
     "windDirection": "SE",
     "isDaytime": "true",
     "probabilityOfPercipitation": "100"
-
   };
 
   Map<String, String> location = {
@@ -71,12 +65,122 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Text(location["city"]!);
+    return Scaffold(
+        appBar: AppBar(
+          shape: const Border(
+              bottom: BorderSide(color: Colors.deepPurple, width: 2)),
+          title: const Center(child: Text("Weather App")),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("${location["city"]!} "),
+                  Text("${location["state"]!}, "),
+                  Text("${location["zip"]!}, ")
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("${forecast["temperature"]} "),
+                  Text("${forecast["shortForecast"]} "),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("${forecast["detailedForecast"]} "),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Column(
+                    children: [
+                      BoxPlaceHolder(
+                          height: screenHeight * 0.25,
+                          width: screenWidth * .8,
+                          text: "Weather Image"),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Column(
+                    children: [
+                      Text("Wind Speed: ${forecast["windSpeed"]} "),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Column(
+                    children: [
+                      Text("Wind Speed: ${forecast["windDirection"]} "),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                BoxPlaceHolder(
+                  height: screenHeight * 0.44,
+                  width: screenWidth * .8,
+                  text: "Weekly Forecast",
+                )
+              ],
+            )
+          ],
+        ));
+  }
+}
+
+class BoxPlaceHolder extends StatelessWidget {
+  final double? height;
+  final double? width;
+  final String? text;
+  const BoxPlaceHolder(
+      {super.key, required this.height, required this.width, this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        height: height,
+        width: width,
+        child: Placeholder(
+          child: Center(child: Text(text!)),
+        ));
   }
 }
